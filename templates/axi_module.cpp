@@ -429,20 +429,17 @@ unsigned char AXI_async_transfer_ff(const float &gr_input,
 
 
 /* verilog_axi_cc */
-unsigned int complex_to_fix(/*...*/)
+unsigned int complex_to_fix(const std::complex<float> &complex_data)
 {
-  /* Please implement this function before use */
-  static bool flag = true;
-  if (flag) {
-    flag = false;
-        std::cout << "Please implement this function before use" << std::endl;
-  }
-  return 0;
+  short real = round(complex_data.real());
+  short imag = round(complex_data.imag());
+  return (unsigned int)real & 0xffff | ((unsigned int)imag << 16);
 }
-std::complex<float> fix_to_complex(/*...*/)
+std::complex<float> fix_to_complex(const unsigned int &fix_data)
 {
-  /* Please implement this function before use */
-  return 0;
+  short real = (((int)fix_data) & 0xffff);
+  short imag = (((int)fix_data) >> 16);
+  return std::complex<float>((float)real, (float)imag);
 }
 unsigned char AXI_async_transfer_cc(const std::complex<float> &gr_input,
                                     std::complex<float> &gr_output,
@@ -469,8 +466,7 @@ unsigned char AXI_async_transfer_cc(const std::complex<float> &gr_input,
   while (!transfer_flag && cycle_tmp < MAX_ITERATION) {
     
     if ((uint8_t)true == top->TREADY_IN) {
-      /* Please implement this function before use */
-      top->TDATA_IN = complex_to_fix(/*...*/);
+      top->TDATA_IN = complex_to_fix(gr_input);
       in_tranfer_flag = true;
     }
 
@@ -484,8 +480,7 @@ unsigned char AXI_async_transfer_cc(const std::complex<float> &gr_input,
         --skip_output_items;
       }
       else {
-        /* Please implement this function before use */
-        gr_output = fix_to_complex(/*...*/);
+        gr_output = fix_to_complex(top->TDATA_OUT);
         out_transfer_flag = true;
       }
     }
@@ -523,3 +518,4 @@ void AXI_close()
     top = NULL;
   }
 }
+
