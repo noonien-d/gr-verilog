@@ -83,7 +83,9 @@ The example `apps/verilog_axi_ff_demo.grc` shows how `Verilog AXI` works with `F
 ![verilog_axi_ff_demo](https://github.com/B0WEN-HU/gr-verilog/blob/master/examples/img/verilog_axi_ff_demo.png)
 
 ## Hint
-The `Complex` type of `Verilog AXI`, `verilog_axi_cc`, is not the block that is ready to use, you definitely will not use only 32 bits to represent a complex number, so you have to some do modifications on the template file in order to fit in your design. Please define the `_USER_MODIFIED_` macro to avoid unnecessary code being compiled (because if you changed the interfaces, there will be a lot of syntax errors in the existing template code).
+The `Complex` type of `Verilog AXI`, `verilog_axi_cc`, does map the real- and 
+imaginary parts to the lower- and upper 16 Bit of the axi word of 32 bit. 
+Currently there is no normalization to 1.
 
 ## Future Work
 Add more examples.
